@@ -1,0 +1,72 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keyboard.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/23 13:42:50 by vpoccard          #+#    #+#             */
+/*   Updated: 2018/02/26 14:56:11 by vpoccard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef KEYBOARD_H
+# define KEYBOARD_H
+
+# define KEY_A			0
+# define KEY_B			11
+# define KEY_C			8
+# define KEY_D			2
+# define KEY_E			14
+# define KEY_F			3
+# define KEY_G			5
+# define KEY_H			4
+# define KEY_I			34
+# define KEY_J			38
+# define KEY_K			40
+# define KEY_L			37
+# define KEY_M			46
+# define KEY_N			45
+# define KEY_O			31
+# define KEY_P			35
+# define KEY_Q			12
+# define KEY_R			15
+# define KEY_S			1
+# define KEY_T			17
+# define KEY_U			32
+# define KEY_V			9
+# define KEY_W			13
+# define KEY_X			7
+# define KEY_Y			16
+# define KEY_Z			6
+
+# define KEY_RETURN		36
+# define KEY_DELETE		51
+# define KEY_SPACE		49
+# define KEY_CLEAR		71
+# define KEY_ESC		53
+
+# define KEY_LCONTROL	256
+# define KEY_LOPTION	261
+# define KEY_LCOMMAND	259
+# define KEY_RCOMMAND	260
+# define KEY_ROPTION	262
+# define KEY_RCONTROL	269
+
+# define KEY_UARROW		126
+# define KEY_DARROW		125
+# define KEY_RARROW		124
+# define KEY_LARROW		123
+
+# define KEY_1T			83
+# define KEY_2T			84
+# define KEY_3T			85
+# define KEY_4T			86
+# define KEY_5T			87
+# define KEY_6T			88
+# define KEY_7T			89
+# define KEY_8T			91
+# define KEY_9T			92
+# define KEY_0T			82
+
+#endif
