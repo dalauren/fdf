@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/15 21:54:42 by vpoccard          #+#    #+#             */
-/*   Updated: 2017/11/21 18:25:02 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/11/17 07:58:00 by dalauren          #+#    #+#             */
+/*   Updated: 2017/11/17 07:58:02 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 void	ft_putnbr(int n)
 {
-	long result;
+	long nb;
 
-	result = n;
-	if (result < 0)
+	nb = n;
+	if (nb < 0)
 	{
-		write(1, "-", 1);
-		result = -result;
+		nb = -nb;
+		ft_putchar('-');
 	}
-	if (result > 9)
+	if (nb > 9)
 	{
-		ft_putnbr(result / 10);
-		ft_putnbr(result % 10);
+		ft_putnbr(nb / 10);
+		ft_putnbr(nb % 10);
 	}
-	if (result < 9)
-		ft_putchar(result + '0');
-	if (result == 9)
-		ft_putchar(result + '0');
+	else
+		ft_putchar(nb + '0');
 }

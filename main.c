@@ -3,44 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/06 15:16:44 by vpoccard          #+#    #+#             */
-/*   Updated: 2018/02/27 04:18:16 by vpoccard         ###   ########.fr       */
+/*   Created: 2018/03/15 16:59:52 by dalauren          #+#    #+#             */
+/*   Updated: 2018/03/26 14:17:04 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int			ft_menu(void)
+static int		ft_pars_file(char *line, t_parse *parse)
 {
-	ft_putchar('\n');
-	ft_putendl("Q = zoom");
-	ft_putendl("W = -zoom");
-	ft_putendl("esc = kill window");
-	ft_putendl("clear = Clear window");
-	ft_putendl("return = Draw again");
-	ft_putendl("moove with the arrow");
-	ft_putendl("A = +relief");
-	ft_putendl("S = -relief");
-	ft_putchar('\n');
-	return (0);
+	int len;
+
+	len = 0;
+	if (!(parse->tab = ft_strsplit(line, ' ')))
+		return (-1);
+	len = ft_strtablen(parse->tab);
+	if (parse->len_previous == 0)
+		parse->len_previous = len;
+	if ((ft_check_tab(parse)) < 0)
+		return (-1);
+	if (len != parse->len_previous)
+		return (-1);
+	return (1);
 }
 
-int			main(int argc, char **argv)
+static int		ft_start_parsing(t_mlx *mlx)
 {
-	t_mlx	mlx;
+	int		ret;
 	int		i;
+	char	*line;
+	t_parse	parse;
 
+	line = NULL;
+	ft_bzero(&parse, sizeof(parse));
 	i = 0;
-	if (ft_or(argc, argv, &mlx) != 1)
-		return (-1);
-	if (ft_parse(&mlx, argv) == -1)
+	while ((ret = get_next_line(mlx->fd, &line)) > 0)
 	{
-		ft_putendl("fdf cant run correctly");
+		if ((ft_pars_file(line, &parse)) < 0)
+			return (-1);
+		ft_lst_push_back(&(parse.lst), line, parse.len_previous);
+		free(line);
+	}
+	return (1);
+}
+
+static int		ft_open_file(t_mlx *mlx, char *format)
+{
+	if ((mlx->fd = open(format, O_RDONLY)) < 0)
+		return (-1);
+	if ((ft_start_parsing(mlx)) == -1)
+		return (-1);
+	return (1);
+}
+
+/*static int		ft_init_mlx(t_mlx *mlx)*/
+/*{*/
+	/*mlx->ptr = mlx_init(mlx->ptr);*/
+	/*if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_X, SIZE_Y, "fdf")))*/
+		/*return (-1);*/
+	/*mlx_loop(mlx->ptr);*/
+	/*return (1);*/
+/*}*/
+
+int				main(int argc, char **argv)
+{
+	t_mlx mlx;
+
+	if (argc != 2)
+	{
+		ft_putendl("wrong number of arguments");
 		return (-1);
 	}
-	ft_menu();
-	ft_init_mlx(&mlx);
+	if ((ft_open_file(&mlx, argv[1])) == -1)
+	{
+		ft_putendl("file is not valid");
+		return (-1);
+	}
+	/*if (!(ft_init_mlx(&mlx)))*/
+	/*{*/
+		/*ft_putendl("file is not valid");*/
+		/*return (-1);*/
+	/*}*/
 	return (0);
 }

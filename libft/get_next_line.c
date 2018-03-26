@@ -3,92 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/01/29 13:48:20 by vpoccard          #+#    #+#             */
-/*   Updated: 2018/03/03 15:16:37 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/12/10 17:20:56 by dalauren          #+#    #+#             */
+/*   Updated: 2018/03/20 17:29:05 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "get_next_line.h"
 
-char		*ft_filsave(int fd, t_point *var)
+int		read_file(int fd, t_gnl *gnl)
 {
-	var->ret = read(fd, var->buf, BUFF_SIZE);
-	var->buf[var->ret] = '\0';
-	var->tmp = var->save;
-	var->save = ft_strjoin(var->save, var->buf);
-	ft_strdel(&var->tmp);
-	var->pnt_n = ft_strchr(var->save, '\n');
-	return (var->save);
-}
+	char	*buf;
 
-int			ft_withoutn(t_point *var, char **line)
-{
-	if (!var->pnt_n && var->ret == 0 && var->i == 0 &&
-			(ft_strcmp(var->save, "") != 0))
-	{
-		var->i += 1;
-		if (!(*line = ft_strnew(BUFF_SIZE)))
-			return (-1);
-		if (!(*line = ft_strdup(var->save)))
-			return (-1);
+	if (gnl->flag)
 		return (1);
-	}
-	return (0);
-}
-
-int			ft_filline(t_point *var, char **line)
-{
-	var->pnt_n = ft_strchr(var->save, '\n');
-	if (var->pnt_n)
-	{
-		*var->pnt_n = 00;
-		if (!(*line = ft_strdup(var->save)) ||
-				!(ft_memmove(var->save, var->pnt_n + 1,
-						ft_strlen(var->pnt_n + 1) + 1)))
-			return (-1);
-		return (1);
-	}
-	return (0);
-}
-
-static int	ft_free_var(t_point *var)
-{
-	if (var->tmp != NULL)
-		free(var->tmp);
-	if (var->pnt_n != NULL)
-		free(var->pnt_n);
-	if (var->save != NULL)
-		free(var->pnt_n);
-	if (var->buf != NULL)
-		free(var->pnt_n);
-	return (0);
-}
-
-int			get_next_line(int fd, char **line)
-{
-	static	t_point		var;
-
-	if (var.i != 0 && var.ret == 0)
-		ft_memset(&var, 0, sizeof(t_point));
-	if (!(var.buf = ft_strnew(BUFF_SIZE)) || !line || fd < 0)
+	if (!(buf = ft_strnew(BUFF_SIZE)))
 		return (-1);
-	if (!var.save)
-		var.save = ft_strnew(0);
-	var.ret = 1;
-	while (var.ret > 0)
+	if ((gnl->ret = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		ft_filsave(fd, &var);
-		if (ft_filline(&var, line) == 1)
-			return (1);
+		buf[gnl->ret] = '\0';
+		gnl->tmp = gnl->str;
+		gnl->str = gnl->tmp ? ft_strjoin(gnl->tmp, buf) : ft_strdup(buf);
+		if (!(gnl->str))
+			return (-1);
+		free(gnl->tmp);
 	}
-	if (ft_withoutn(&var, line) == 1)
+	free(buf);
+	return (gnl->ret);
+}
+
+void	find_after_cut(t_gnl *gnl)
+{
+	gnl->i = 0;
+	while (gnl->str[gnl->i] != '\n' && gnl->str[gnl->i])
+		gnl->i++;
+	if (gnl->str[gnl->i] == '\n')
+		gnl->flag = 1;
+	else
+		gnl->flag = 0;
+}
+
+int		line_and_cut(int fd, t_gnl *gnl, char **line)
+{
+	gnl->i = 0;
+	while (gnl->str[gnl->i] != '\n' && gnl->str[gnl->i] != '\0')
+		gnl->i++;
+	if (gnl->str[gnl->i] == '\n')
+	{
+		if (!(*line = ft_strsub(gnl->str, 0, gnl->i)))
+			return (-1);
+		gnl->tmp = gnl->str;
+		if (!(gnl->str = ft_strdup(gnl->tmp + gnl->i + 1)))
+			return (-1);
+		free(gnl->tmp);
+		find_after_cut(gnl);
 		return (1);
-	if (var.ret == 0)
-	{
-		ft_memset(&var, 0, sizeof(t_point));
-		ft_free_var(&var);
 	}
-	return (var.ret);
+	gnl->flag = 0;
+	if ((read_file(fd, gnl)) > 0)
+		line_and_cut(fd, gnl, line);
+	else if (gnl->str && gnl->str[0])
+	{
+		if (!(*line = ft_strdup(gnl->str)))
+			return (-1);
+		ft_strdel(&gnl->str);
+	}
+	return (1);
+}
+
+int		get_next_line(const int fd, char **line)
+{
+	static t_gnl	gnl;
+	int				read;
+
+	if (fd < 0 || line == NULL)
+		return (-1);
+	if (*line == NULL || (gnl.fd != fd))
+	{
+		if (gnl.str)
+			ft_strdel(&gnl.str);
+		ft_memset(&gnl, 0, sizeof(t_gnl));
+	}
+	gnl.fd = fd;
+	read = read_file(fd, &gnl);
+	if (read == 0 && gnl.str && gnl.str[0])
+	{
+		if (!(*line = ft_strdup(gnl.str)))
+			return (-1);
+		ft_strdel(&gnl.str);
+		return (1);
+	}
+	if (read <= 0)
+		return (read);
+	return (line_and_cut(fd, &gnl, line));
 }

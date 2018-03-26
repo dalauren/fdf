@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/15 18:16:56 by vpoccard          #+#    #+#             */
-/*   Updated: 2017/11/21 19:43:12 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/11/17 08:01:59 by dalauren          #+#    #+#             */
+/*   Updated: 2017/11/30 20:22:10 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,27 @@
 
 char	*ft_strtrim(char const *s)
 {
-	int		i;
-	int		j;
-	int		k;
-	char	*tmp;
+	size_t			i;
+	unsigned int	begin;
+	unsigned int	end;
 
+	i = 0;
+	begin = 0;
+	end = 0;
 	if (s)
 	{
-		i = 0;
-		j = ft_strlen((char *)s) - 1;
-		while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
+		while (s[i] && (s[i] == ' ' || s[i] == '\t' || s[i] == '\n'))
 			i++;
-		if ((tmp = (char *)malloc(sizeof(char) * (j + 2))) == NULL)
-			return (NULL);
-		while (s[j] == ' ' || s[j] == '\n' || s[j] == '\t')
-			j--;
-		k = 0;
-		while (i <= j)
-			tmp[k++] = s[i++];
-		tmp[k] = '\0';
-		return (tmp);
+		if (s[i] == '\0')
+			return (ft_strnew(0));
+		begin = i;
+		while (s[i])
+		{
+			if (s[i] != ' ' && s[i] != '\t' && s[i] != '\n')
+				end = i;
+			i++;
+		}
+		return (ft_strsub(s, begin, (size_t)(end - begin + 1)));
 	}
 	return (NULL);
 }

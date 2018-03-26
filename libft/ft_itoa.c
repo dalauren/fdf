@@ -3,61 +3,49 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 17:39:29 by vpoccard          #+#    #+#             */
-/*   Updated: 2017/11/22 20:28:00 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/11/17 07:54:58 by dalauren          #+#    #+#             */
+/*   Updated: 2017/11/17 08:20:05 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_int_len(int n)
+static void		itoa_isnegative(int *n, int *negative)
 {
-	int q;
-	int i;
-
-	i = 0;
-	if (n < 0)
+	if (*n < 0)
 	{
-		i++;
-		n = -n;
+		*n *= -1;
+		*negative = 1;
 	}
-	while (n > 0)
-	{
-		q = n % 10;
-		q = n - q;
-		n = n / 10;
-		i++;
-	}
-	return (i);
 }
 
 char			*ft_itoa(int n)
 {
-	int		q;
+	int		tmpn;
 	int		len;
-	char	*toa;
+	int		negative;
+	char	*str;
 
-	len = ft_int_len(n);
-	toa = (char *)malloc(sizeof(char) * (len + 1));
 	if (n == -2147483648)
 		return (ft_strdup("-2147483648"));
-	if (n == 0 || !toa)
-		return (ft_strdup("0"));
-	if (n < 0)
+	tmpn = n;
+	len = 2;
+	negative = 0;
+	itoa_isnegative(&n, &negative);
+	while (tmpn /= 10)
+		len++;
+	len += negative;
+	if ((str = (char*)malloc(sizeof(char) * len)) == NULL)
+		return (NULL);
+	str[--len] = '\0';
+	while (len--)
 	{
-		toa[0] = '-';
-		n = -n;
-	}
-	toa[len] = '\0';
-	while (n > 0)
-	{
-		toa[len - 1] = n % 10 + '0';
-		q = n % 10;
-		n = n - q;
+		str[len] = n % 10 + '0';
 		n = n / 10;
-		len--;
 	}
-	return (toa);
+	if (negative)
+		str[0] = '-';
+	return (str);
 }

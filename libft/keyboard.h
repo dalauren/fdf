@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   keyboard.h                                         :+:      :+:    :+:   */
+/*   keyboard.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/23 13:42:50 by vpoccard          #+#    #+#             */
-/*   Updated: 2018/02/26 14:56:11 by vpoccard         ###   ########.fr       */
+/*   Created: 2018/03/06 18:56:04 by dalauren          #+#    #+#             */
+/*   Updated: 2018/03/06 18:56:59 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,5 @@
 
 # define KEY_1T			83
 # define KEY_2T			84
-# define KEY_3T			85
-# define KEY_4T			86
-# define KEY_5T			87
-# define KEY_6T			88
-# define KEY_7T			89
-# define KEY_8T			91
-# define KEY_9T			92
-# define KEY_0T			82
 
 #endif

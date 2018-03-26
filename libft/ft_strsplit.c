@@ -3,49 +3,73 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strsplit.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/20 17:17:10 by vpoccard          #+#    #+#             */
-/*   Updated: 2018/01/04 21:57:03 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/11/17 08:46:15 by dalauren          #+#    #+#             */
+/*   Updated: 2017/11/17 10:48:50 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_count(char const *str, int i, char c)
+static int		nb_word(char *str, char c)
 {
-	int			count;
+	int i;
+	int word;
 
-	count = i;
-	while (str[count] != c && str[count])
-		count++;
-	return (count - i);
+	i = 0;
+	word = 0;
+	while (str[i] != '\0')
+	{
+		while (str[i] == c && str[i])
+			i++;
+		if (str[i] != c && str[i])
+			word++;
+		while (str[i] != c && str[i])
+			i++;
+	}
+	return (word);
+}
+
+static char		*fill_tab(char *s, char c, int *i)
+{
+	char	*str;
+	int		j;
+
+	if (!(str = (char*)malloc(sizeof(char) * (ft_strlen(s) + 1))))
+		return (NULL);
+	j = 0;
+	while (s[*i] != c && s[*i])
+	{
+		str[j] = s[*i];
+		j++;
+		*i += 1;
+	}
+	str[j] = '\0';
+	while (s[*i] == c && s[*i])
+		*i += 1;
+	return (str);
 }
 
 char			**ft_strsplit(char const *s, char c)
 {
-	int			i;
-	int			j;
-	int			k;
-	char		**tab;
+	char	**tab;
+	int		i;
+	int		k;
 
 	i = 0;
-	j = 0;
-	if (s == NULL || !(tab = (char**)malloc(sizeof(char*) * ft_strlen(s))))
+	k = 0;
+	if (s == NULL)
 		return (NULL);
-	while (s[i])
+	if (!(tab = (char**)malloc(sizeof(char*) * (nb_word((char*)s, c) + 1))))
+		return (NULL);
+	while (s[i] == c && s[i])
+		i++;
+	while (k < nb_word((char *)s, c) && s[i])
 	{
-		while (s[i] == c && s[i])
-			i++;
-		if (s[i] && s[i] != c)
-		{
-			k = 0;
-			tab[j] = ft_memalloc(ft_count(s, i, c) + 1);
-			while (s[i] != c && s[i])
-				tab[j][k++] = s[i++];
-			tab[j++][k] = '\0';
-		}
+		tab[k] = fill_tab((char*)s, c, &i);
+		k++;
 	}
-	tab[j] = NULL;
+	tab[k] = 0;
 	return (tab);
 }

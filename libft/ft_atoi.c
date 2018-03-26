@@ -3,40 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vpoccard <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/10 16:28:49 by vpoccard          #+#    #+#             */
-/*   Updated: 2017/11/21 18:15:14 by vpoccard         ###   ########.fr       */
+/*   Created: 2017/11/17 07:53:24 by dalauren          #+#    #+#             */
+/*   Updated: 2018/02/26 16:18:55 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_atoi(const char *str)
+int		ft_atoi(const char *str)
 {
-	int		i;
-	int		result;
-	int		neg;
+	int n;
+	int sign;
 
-	i = 0;
-	result = 0;
-	neg = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || (str[i] == ' '))
-		i++;
-	if (str[i] == '+' && str[i + 1] != '-')
-		i++;
-	if (str[i] == '-')
+	sign = 1;
+	n = 0;
+	while (ft_isspace(*str))
+		str++;
+	if (*str == '-')
 	{
-		neg = 1;
-		i++;
+		sign = -1;
+		str++;
 	}
-	while ((str[i] >= 48) && (str[i] <= 57))
+	else if (*str == '+')
+		str++;
+	while (*str && ft_isdigit(*str))
 	{
-		result = (result * 10) + (str[i] - 48);
-		i++;
+		n = n * 10 + (*str - '0');
+		str++;
 	}
-	if (neg == 1)
-		return (-result);
-	else
-		return (result);
+	return (n * sign);
 }
