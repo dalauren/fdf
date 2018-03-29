@@ -6,13 +6,13 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 17:25:42 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/26 14:08:38 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/03/28 18:05:00 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-size_t	ft_strtablen(char **tab)
+size_t			ft_strtablen(char **tab)
 {
 	size_t i;
 
@@ -22,7 +22,19 @@ size_t	ft_strtablen(char **tab)
 	return (i);
 }
 
-int		ft_check_tab(t_parse *parse)
+void	ft_display_tab(char **tab)
+{
+	int i;
+
+	i = 0;
+	while (tab[i])
+	{
+		ft_putstr(tab[i]);
+		i++;
+	}
+}
+
+int				ft_check_tab(t_parse *parse)
 {
 	int i;
 	int j;
@@ -35,12 +47,13 @@ int		ft_check_tab(t_parse *parse)
 	{
 		while (parse->tab[i][j])
 		{
-			if (parse->tab[i][j] == '-')
-				j++;
-			if (!ft_isdigit(parse->tab[i][j]) && parse->tab[i][j] != '-')
-				return (-1);
 			while (ft_isdigit(parse->tab[i][j]) && parse->tab[i][j])
 				j++;
+			if (parse->tab[i][j] == '-')
+				j++;
+			if ((!ft_isdigit(parse->tab[i][j]) && parse->tab[i][j] == '-'))
+				return (-1);
+			j++;
 		}
 		j = 0;
 		i++;

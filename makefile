@@ -6,7 +6,7 @@
 #    By: dalauren <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/15 17:32:37 by dalauren          #+#    #+#              #
-#    Updated: 2018/03/23 11:17:02 by dalauren         ###   ########.fr        #
+#    Updated: 2018/03/29 14:52:44 by dalauren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ LIB_M = -Llibft -lft -lmlx -framework OpenGl -framework Appkit
 
 SRC = main.c \
 	  parsing.c \
+	  get_data.c \
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:56:01 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/26 14:09:53 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/03/29 12:22:41 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,29 +25,37 @@
 # define SIZE_X 900
 # define SIZE_Y 700
 
-typedef struct		s_point
+typedef struct			s_point
 {
-	int				x;
-	int				y;
-	int				z;
-}					t_point;
+	int					x;
+	int					y;
+	int					z;
+}						t_point;
 
-typedef struct		s_parse
+typedef struct			s_parse
 {
-	int				len;
-	int				len_previous;
-	struct s_list	*lst;
-	char			**tab;
-}					t_parse;
+	int					len;
+	int					nb_line;
+	int					len_previous;
+	struct s_list		*lst;
+	char				**tab;
+}						t_parse;
 
-typedef struct		s_mlx
+typedef struct			s_mlx
 {
-	void			*ptr;
-	void			*win;
-	int				fd;
-}					t_mlx;
+	void				*ptr;
+	void				*win;
+	int					fd;
+	int					x;
+	int					y;
+	int					z;
+}						t_mlx;
 
-int			ft_check_tab(t_parse *parse);
-size_t		ft_strtablen(char **tab);
+int						ft_check_tab(t_parse *parse);
+int						get_data(t_parse *parse);
+void					ft_display_tab(char **tab);
+void					ft_display_lst(t_list *begin_list);
+
+size_t					ft_strtablen(char **tab);
 
 #endif
