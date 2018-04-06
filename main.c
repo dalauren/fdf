@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:59:52 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/29 14:51:23 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/06 13:40:21 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,15 @@ static int		ft_open_file(t_mlx *mlx, char *format)
 	return (1);
 }
 
-/*static int		ft_init_mlx(t_mlx *mlx)*/
-/*{*/
-	/*mlx->ptr = mlx_init(mlx->ptr);*/
-	/*if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_X, SIZE_Y, "fdf")))*/
-		/*return (-1);*/
-	/*mlx_loop(mlx->ptr);*/
-	/*return (1);*/
-/*}*/
+static int		ft_init_mlx(t_mlx *mlx)
+{
+	mlx->ptr = mlx_init(mlx->ptr);
+	if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_X, SIZE_Y, "fdf")))
+		return (-1);
+	mlx_key_hook(mlx->win, ft_keyboard, mlx);
+	mlx_loop(mlx->ptr);
+	return (1);
+}
 
 int				main(int argc, char **argv)
 {
@@ -89,10 +90,10 @@ int				main(int argc, char **argv)
 		ft_putendl("file isn't valid");
 		return (-1);
 	}
-	/*if (!(ft_init_mlx(&mlx)))*/
-	/*{*/
-		/*ft_putendl("the opening went wrong");*/
-		/*return (-1);*/
-	/*}*/
+	if (!(ft_init_mlx(&mlx)))
+	{
+		ft_putendl("the opening went wrong");
+		return (-1);
+	}
 	return (0);
 } // don't forget to free the lst
