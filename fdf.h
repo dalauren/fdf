@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:56:01 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/06 13:42:01 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/06 15:03:29 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,15 +45,13 @@ typedef struct			s_mlx
 {
 	void				*ptr;
 	void				*win;
+	int					fd;
 	int					key;
 }						t_mlx;
 
 int						ft_check_tab(t_parse *parse);
 int						ft_keyboard(int key, t_mlx *mlx);
-int						get_data(t_parse *parse);
-void					ft_display_tab(char **tab);
-void					ft_display_lst(t_list *begin_list);
-
+int						get_data(t_parse *parse, t_point ***pt);
 size_t					ft_strtablen(char **tab);
 
 #endif

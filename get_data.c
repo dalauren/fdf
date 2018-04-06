@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 11:31:43 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/29 14:51:39 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/06 15:02:12 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int		get_pos(t_parse *parse, t_point ***pt)
 	if (!(pt = (t_point ***)malloc(sizeof(t_point **) * parse->nb_line)))
 		return (-1);
 	while (i < parse->nb_line)
-	{
+{
 		if (!(pt[i] = (t_point **)malloc(sizeof(t_point *) *
 						parse->len_previous)))
 			return (-1);
@@ -46,12 +46,9 @@ static int		get_pos(t_parse *parse, t_point ***pt)
 	return (0);
 }
 
-int				get_data(t_parse *parse)
+int				get_data(t_parse *parse, t_point ***pt)
 {
-	t_point		**pt;
-
-	ft_bzero(&pt, sizeof(pt));
-	if ((get_pos(parse, &pt)) < 0)
+	if ((get_pos(parse, pt)) < 0)
 		return (-1);
 	return (0);
 }// pas oublier de free le tab a la fin

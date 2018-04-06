@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:59:52 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/06 13:40:21 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/06 15:03:21 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int		ft_start_parsing(t_mlx *mlx, t_parse *parse)
 	return (1);
 }
 
-static int		ft_open_file(t_mlx *mlx, char *format)
+static int		ft_open_file(t_mlx *mlx, char *format, t_point ***pt)
 {
 	t_parse	parse;
 
@@ -61,13 +61,14 @@ static int		ft_open_file(t_mlx *mlx, char *format)
 		return (-1);
 	if ((ft_start_parsing(mlx, &parse)) == -1)
 		return (-1);
-	if ((get_data(&parse) < 0))
+	if ((get_data(&parse, pt) < 0))
 			return (-1);
 	return (1);
 }
 
-static int		ft_init_mlx(t_mlx *mlx)
+static int		ft_init_mlx(t_mlx *mlx, t_point ***pt)
 {
+	(void)pt;
 	mlx->ptr = mlx_init(mlx->ptr);
 	if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_X, SIZE_Y, "fdf")))
 		return (-1);
@@ -78,19 +79,21 @@ static int		ft_init_mlx(t_mlx *mlx)
 
 int				main(int argc, char **argv)
 {
-	t_mlx mlx;
+	t_mlx		mlx;
+	t_point		**pt;
 
+	ft_bzero(&pt, sizeof(pt));
 	if (argc != 2)
 	{
 		ft_putendl("wrong number of arguments");
 		return (-1);
 	}
-	if ((ft_open_file(&mlx, argv[1])) == -1)
+	if ((ft_open_file(&mlx, argv[1], &pt)) == -1)
 	{
 		ft_putendl("file isn't valid");
 		return (-1);
 	}
-	if (!(ft_init_mlx(&mlx)))
+	if (!(ft_init_mlx(&mlx, &pt)))
 	{
 		ft_putendl("the opening went wrong");
 		return (-1);
