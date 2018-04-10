@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:59:52 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/10 15:49:05 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:31:36 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,7 @@ static int		ft_init_mlx(t_mlx *mlx)
 	mlx->ptr = mlx_init(mlx->ptr);
 	if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_W, SIZE_H, "fdf")))
 		return (-1);
-	mlx->img.pt_image = mlx_new_image(mlx->ptr, SIZE_W, SIZE_H);
-	mlx->img.data = (int*)mlx_get_data_addr(mlx->img.pt_image, &mlx->img.bpp,
-			&mlx->img.size_l, &mlx->img.endian);
-	mlx_key_hook(mlx->win, ft_keyboard, mlx);
-	mlx_loop(mlx->ptr);
+	start_map(mlx);
 	return (1);
 }
 
@@ -90,18 +86,18 @@ int				main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_putendl("wrong number of arguments");
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
 	if ((ft_open_file(&mlx, argv[1])) == -1)
 	{
 		ft_putendl("file isn't valid");
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
-	if (!(ft_init_mlx(&mlx)))
+	if (ft_init_mlx(&mlx) < 0)
 	{
 		free_pt(&mlx.pt);
 		ft_putendl("the opening went wrong");
-		return (-1);
+		exit(EXIT_FAILURE);
 	}
 	free_pt(&mlx.pt);
 	return (0);

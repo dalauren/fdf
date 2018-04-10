@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:56:01 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/10 15:36:21 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/10 16:31:20 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef struct			s_parse
 typedef struct			s_img
 {
 	void				*pt_image;
-	char				*my_image_string;
 	int					*data;
 	int					size_l;
 	int					bpp;
@@ -65,6 +64,7 @@ void					free_pt(t_point ****pt);
 int						ft_check_tab(t_parse *parse);
 int						ft_keyboard(int key, t_mlx *mlx);
 int						get_data(t_parse *parse, t_mlx *mlx);
+int						start_map(t_mlx *mlx);
 size_t					ft_strtablen(char **tab);
 
 #endif
