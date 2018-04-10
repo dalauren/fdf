@@ -5,97 +5,99 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/12/10 17:20:56 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/20 17:29:05 by dalauren         ###   ########.fr       */
+/*   Created: 2018/04/09 15:31:04 by dalauren          #+#    #+#             */
+/*   Updated: 2018/04/09 15:38:57 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
 #include "get_next_line.h"
+#include <sys/types.h>
+#include <sys/uio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-int		read_file(int fd, t_gnl *gnl)
+static int		gnl_read(t_line **gnl)
 {
-	char	*buf;
-
-	if (gnl->flag)
-		return (1);
-	if (!(buf = ft_strnew(BUFF_SIZE)))
+	char		buffer[GNL_BUFFER_SIZE + 1];
+	int			ret;
+	t_list		*lst;
+	if ((ret = read((*gnl)->fd, buffer, GNL_BUFFER_SIZE)) > 0)
+		buffer[ret] = 0;
+	(*gnl)->ret = ret;
+	if (ret < 0)
 		return (-1);
-	if ((gnl->ret = read(fd, buf, BUFF_SIZE)) > 0)
-	{
-		buf[gnl->ret] = '\0';
-		gnl->tmp = gnl->str;
-		gnl->str = gnl->tmp ? ft_strjoin(gnl->tmp, buf) : ft_strdup(buf);
-		if (!(gnl->str))
-			return (-1);
-		free(gnl->tmp);
-	}
-	free(buf);
-	return (gnl->ret);
-}
-
-void	find_after_cut(t_gnl *gnl)
-{
-	gnl->i = 0;
-	while (gnl->str[gnl->i] != '\n' && gnl->str[gnl->i])
-		gnl->i++;
-	if (gnl->str[gnl->i] == '\n')
-		gnl->flag = 1;
-	else
-		gnl->flag = 0;
-}
-
-int		line_and_cut(int fd, t_gnl *gnl, char **line)
-{
-	gnl->i = 0;
-	while (gnl->str[gnl->i] != '\n' && gnl->str[gnl->i] != '\0')
-		gnl->i++;
-	if (gnl->str[gnl->i] == '\n')
-	{
-		if (!(*line = ft_strsub(gnl->str, 0, gnl->i)))
-			return (-1);
-		gnl->tmp = gnl->str;
-		if (!(gnl->str = ft_strdup(gnl->tmp + gnl->i + 1)))
-			return (-1);
-		free(gnl->tmp);
-		find_after_cut(gnl);
-		return (1);
-	}
-	gnl->flag = 0;
-	if ((read_file(fd, gnl)) > 0)
-		line_and_cut(fd, gnl, line);
-	else if (gnl->str && gnl->str[0])
-	{
-		if (!(*line = ft_strdup(gnl->str)))
-			return (-1);
-		ft_strdel(&gnl->str);
-	}
-	return (1);
-}
-
-int		get_next_line(const int fd, char **line)
-{
-	static t_gnl	gnl;
-	int				read;
-
-	if (fd < 0 || line == NULL)
+	if (!(lst = ft_lstnew(buffer, ret + 1)))
 		return (-1);
-	if (*line == NULL || (gnl.fd != fd))
+	lst->content_size -= 1;
+	*((char *)lst->content + ret) = 0;
+	lst->next = (*gnl)->read;
+	(*gnl)->read = lst;
+	return (ret);
+}
+
+static int		gnl_find(t_line **gnl, size_t *size)
+{
+	int		i;
+	char	*s;
+
+	if (!(*gnl)->read)
+		return (0);
+	s = (*gnl)->read->content;
+	i = (*gnl)->i < 0 ? 0 : (*gnl)->i;
+	while (s[i])
 	{
-		if (gnl.str)
-			ft_strdel(&gnl.str);
-		ft_memset(&gnl, 0, sizeof(t_gnl));
+		if (s[i] == '\n')
+		{
+			(*gnl)->i = i;
+			*size += i;
+			return (1);
+		}
+		++i;
 	}
-	gnl.fd = fd;
-	read = read_file(fd, &gnl);
-	if (read == 0 && gnl.str && gnl.str[0])
-	{
-		if (!(*line = ft_strdup(gnl.str)))
-			return (-1);
-		ft_strdel(&gnl.str);
-		return (1);
-	}
-	if (read <= 0)
-		return (read);
-	return (line_and_cut(fd, &gnl, line));
+	(*gnl)->i = -1;
+	*size += i;
+	return (0);
+}
+
+static int		gnl_get_line(t_line **gnl, char **line)
+{
+	size_t		size;
+	t_list		*tmp;
+
+	size = 0;
+	(*gnl)->i = 0;
+	while (!gnl_find(gnl, &size) && gnl_read(gnl) > 0)
+		;
+	if ((!size && !(*gnl)->ret) || (*gnl)->ret < 0)
+		return ((*gnl)->ret);
+	if (!(*line = ft_strnew(size)))
+		return (-1);
+	(*gnl)->i = (*gnl)->i == -1 ? (int)(*gnl)->read->content_size : (*gnl)->i;
+	tmp = (*gnl)->read;
+	gnl_fill_line(gnl, line, tmp, size);
+	(*gnl)->read = tmp;
+	return (gnl_prepare_next_line(gnl, tmp));
+}
+
+int			get_next_line(int const fd, char **line)
+{
+	static void		*first = NULL;
+	t_line			*gnl;
+	int				ret;
+
+	if (fd < 0 || fd == 1 || !line)
+		return(-1);
+	*line = NULL;
+	gnl = !first ? NULL : first;
+	if (gnl && gnl->fd != fd)
+		gnl_free(&gnl);
+	if (!gnl && !gnl_alloc(&gnl, fd))
+		return (-1);
+	ret = gnl_get_line(&gnl, line);
+	ret = ret <= 0 ? ret : 1;
+	if (ret <= 0)
+		gnl_free(&gnl);
+	first = gnl;
+	return (ret);
 }

@@ -6,7 +6,7 @@
 #    By: dalauren <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/15 17:32:37 by dalauren          #+#    #+#              #
-#    Updated: 2018/04/06 13:03:43 by dalauren         ###   ########.fr        #
+#    Updated: 2018/04/10 15:33:40 by dalauren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = main.c \
 	  parsing.c \
 	  get_data.c \
 	  event.c \
+	  display_window.c\
 
 OBJ = $(SRC:.c=.o)
 

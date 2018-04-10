@@ -6,7 +6,7 @@
 #    By: dalauren <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 08:03:44 by dalauren          #+#    #+#              #
-#    Updated: 2018/03/29 11:56:28 by dalauren         ###   ########.fr        #
+#    Updated: 2018/04/09 15:39:30 by dalauren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -90,6 +90,8 @@ SOURCES = ft_atoi.c\
 		  ft_strjoinfree.c\
 		  ft_uintmaxtoa.c\
 		  get_next_line.c\
+		  get_next_line_utilities.c\
+		  ft_deltab.c\
 
 OBJ = $(SOURCES:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 08:03:34 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/29 11:56:13 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/06 15:29:03 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isprint(int c);
 void				ft_strrev(char *s);
+void				ft_deltab(char **tab);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strncpy(char *dst, const char *src, size_t len);
 void				*ft_memset(void *b, int c, size_t len);

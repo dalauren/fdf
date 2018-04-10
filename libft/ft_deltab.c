@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel.c                                        :+:      :+:    :+:   */
+/*   ft_deltab.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/17 07:55:11 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/06 15:21:25 by dalauren         ###   ########.fr       */
+/*   Created: 2018/04/06 15:27:42 by dalauren          #+#    #+#             */
+/*   Updated: 2018/04/09 17:17:58 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdel(t_list **alst, void (*del)(void*, size_t))
+void	ft_deltab(char **tab)
 {
-	t_list *robin;
-	t_list *batman;
+	int i;
 
-	batman = *alst;
-	while (batman != NULL)
+	i = 0;
+	while (tab[i])
 	{
-		robin = batman->next;
-		ft_lstdelone(&batman, del);
-		batman = robin;
+		free(tab[i]);
+		i++;
 	}
-	*alst = NULL;
+	free(tab);
 }
