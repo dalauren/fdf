@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:59:52 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/10 16:31:36 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/20 16:22:20 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ static int		ft_open_file(t_mlx *mlx, char *format)
 		return (-1);
 	if ((get_data(&parse, mlx) < 0))
 			return (-1);
+	mlx->size_line = parse.len_previous;
+	mlx->nb_line = parse.nb_line;
+	transform_point(mlx);
 	ft_lstdelete(&parse);
 	close(mlx->fd);
 	return (1);
@@ -71,6 +74,8 @@ static int		ft_open_file(t_mlx *mlx, char *format)
 
 static int		ft_init_mlx(t_mlx *mlx)
 {
+	mlx->size_w = SIZE_W;
+	mlx->size_h = SIZE_H;
 	mlx->ptr = mlx_init(mlx->ptr);
 	if (!(mlx->win = mlx_new_window(mlx->ptr, SIZE_W, SIZE_H, "fdf")))
 		return (-1);
@@ -83,6 +88,7 @@ int				main(int argc, char **argv)
 	t_mlx		mlx;
 
 	ft_bzero(&mlx, sizeof(t_mlx));
+	mlx.div = 5;
 	if (argc != 2)
 	{
 		ft_putendl("wrong number of arguments");

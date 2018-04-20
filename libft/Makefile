@@ -6,7 +6,7 @@
 #    By: dalauren <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/17 08:03:44 by dalauren          #+#    #+#              #
-#    Updated: 2018/04/09 15:39:30 by dalauren         ###   ########.fr        #
+#    Updated: 2018/04/16 17:39:43 by dalauren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ FLAGS = -Wall -Wextra -Werror
 
 SOURCES = ft_atoi.c\
 		  ft_bzero.c\
+		  ft_swap.c\
 		  ft_isalnum.c\
 		  ft_isalpha.c\
 		  ft_isascii.c\
