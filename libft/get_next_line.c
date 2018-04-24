@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/09 15:31:04 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/09 15:38:57 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 20:00:43 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int		gnl_read(t_line **gnl)
 	char		buffer[GNL_BUFFER_SIZE + 1];
 	int			ret;
 	t_list		*lst;
+
 	if ((ret = read((*gnl)->fd, buffer, GNL_BUFFER_SIZE)) > 0)
 		buffer[ret] = 0;
 	(*gnl)->ret = ret;
@@ -80,14 +81,14 @@ static int		gnl_get_line(t_line **gnl, char **line)
 	return (gnl_prepare_next_line(gnl, tmp));
 }
 
-int			get_next_line(int const fd, char **line)
+int				get_next_line(int const fd, char **line)
 {
 	static void		*first = NULL;
 	t_line			*gnl;
 	int				ret;
 
 	if (fd < 0 || fd == 1 || !line)
-		return(-1);
+		return (-1);
 	*line = NULL;
 	gnl = !first ? NULL : first;
 	if (gnl && gnl->fd != fd)

@@ -6,7 +6,7 @@
 #    By: dalauren <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/15 17:32:37 by dalauren          #+#    #+#              #
-#    Updated: 2018/04/17 13:06:53 by dalauren         ###   ########.fr        #
+#    Updated: 2018/04/23 11:44:13 by dalauren         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,7 @@ SRC = main.c \
 	  parsing.c \
 	  get_data.c \
 	  event.c \
+	  event2.c \
 	  display_window.c \
 	  line.c \
 	  algo.c \

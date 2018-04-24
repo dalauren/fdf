@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/28 11:31:43 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/20 15:10:14 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 20:11:07 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void			free_pt(t_point ****pt)
 	int		j;
 
 	i = 0;
-	while((*pt)[i])
+	while ((*pt)[i])
 	{
 		j = 0;
-		while((*pt)[i][j])
+		while ((*pt)[i][j])
 		{
 			free((*pt)[i][j]);
 			j++;
@@ -47,20 +47,11 @@ void			free_pt(t_point ****pt)
 	free(*(pt));
 }
 
-static void		get_z(int z, t_mlx *mlx)
-{
-	if (z > mlx->z_max)
-		mlx->z_max = z;
-	if (z < mlx->z_min)
-		mlx->z_min = z;
-}
-
 void			transform_point(t_mlx *mlx)
 {
 	int		i;
 	int		j;
 
-	calcul_z(mlx);
 	if (mlx->size_line > mlx->nb_line)
 		mlx->scale = SIZE_W / (mlx->size_line * 2);
 	else if (mlx->z_scale > mlx->nb_line)

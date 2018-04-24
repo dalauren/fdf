@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_swap.c                                          :+:      :+:    :+:   */
+/*   event2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: clhenry <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/06 13:12:24 by clhenry           #+#    #+#             */
-/*   Updated: 2018/04/23 11:39:42 by dalauren         ###   ########.fr       */
+/*   Created: 2018/04/23 11:42:03 by dalauren          #+#    #+#             */
+/*   Updated: 2018/04/24 18:41:37 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "fdf.h"
 
-void	ft_swap(float *a, float *b)
+void	reset_map(t_mlx *mlx)
 {
-	float tmp;
-
-	tmp = *a;
-	*a = *b;
-	*b = tmp;
+	mlx->div = 5;
+	mlx_destroy_window(mlx->ptr, mlx->win);
+	ft_open_file(mlx, mlx->format);
+	ft_init_mlx(mlx);
 }

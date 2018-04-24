@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 08:03:34 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/16 17:40:07 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/23 11:39:57 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int					ft_isascii(int c);
 int					ft_isprint(int c);
 void				ft_strrev(char *s);
 void				ft_deltab(char **tab);
-void				ft_swap(int *a, int *b);
+void				ft_swap(float *a, float *b);
 char				**ft_strsplit(char const *s, char c);
 char				*ft_strncpy(char *dst, const char *src, size_t len);
 void				*ft_memset(void *b, int c, size_t len);

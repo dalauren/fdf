@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 17:25:42 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/09 17:43:14 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 19:56:29 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t			ft_strtablen(char **tab)
 	return (i);
 }
 
-void	ft_display_tab(char **tab)
+void			ft_display_tab(char **tab)
 {
 	int i;
 

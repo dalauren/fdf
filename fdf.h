@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 16:56:01 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/20 16:38:58 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 20:03:39 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@
 
 typedef struct			s_point
 {
-	int					x;
-	int					y;
-	int					z;
+	float				x;
+	float				y;
+	float				z;
 }						t_point;
 
 typedef struct			s_line
@@ -49,11 +49,11 @@ typedef struct			s_parse
 
 typedef struct			s_img
 {
-	void				*pt_image;
-	int					*data;
-	int					size_l;
-	int					bpp;
+	void				*img_ptr;
+	char				*img_str;
 	int					endian;
+	int					s_l;
+	int					bpp;
 }						t_img;
 
 typedef struct			s_mlx
@@ -65,6 +65,7 @@ typedef struct			s_mlx
 	float				div;
 	float				size_w;
 	float				size_h;
+	char				*format;
 	int					color;
 	int					size_line;
 	int					nb_line;
@@ -72,19 +73,26 @@ typedef struct			s_mlx
 	int					z_min;
 	int					z_max;
 	int					z_scale;
-	t_img				img;
 	t_point				***pt;
+	t_img				img;
 }						t_mlx;
 
 void					ft_lstdelete(t_parse *parse);
 void					free_pt(t_point ****pt);
 void					line(t_line l, t_mlx *mlx, int color);
-void					calcul_z(t_mlx *mlx);
 void					modif_height(int key, t_mlx *mlx);
 void					modif_place(int key, t_mlx *mlx);
 void					transform_point(t_mlx *mlx);
+void					ft_zoom(int key, t_mlx *mlx);
+void					zoom_plus(t_mlx *mlx);
+void					zoom_less(t_mlx *mlx);
+void					reset_map(t_mlx *mlx);
+void					put_pixel(int x, int y, unsigned int color, t_img *img);
+void					get_z(int z, t_mlx *mlx);
+int						ft_open_file(t_mlx *mlx, char *format);
 int						ft_check_tab(t_parse *parse);
 int						ft_keyboard(int key, t_mlx *mlx);
+int						ft_init_mlx(t_mlx *mlx);
 int						ft_mouse(int button, int x, int y, void *param);
 int						get_data(t_parse *parse, t_mlx *mlx);
 int						draw_map(t_mlx *mlx);

@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/06 18:56:04 by dalauren          #+#    #+#             */
-/*   Updated: 2018/03/30 18:03:00 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/21 12:19:57 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,8 @@
 
 # define KEY_1T			83
 # define KEY_2T			84
+
+# define KEY_PLUS		69
+# define KEY_LESS		78
 
 #endif

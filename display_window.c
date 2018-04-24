@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/10 15:33:19 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/20 16:38:49 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 20:06:38 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,48 @@
 
 int			start_map(t_mlx *mlx)
 {
-	/*mlx->img.pt_image = mlx_new_image(mlx->ptr, SIZE_W, SIZE_H);*/
-	/*mlx->img.data = (int*)mlx_get_data_addr(mlx->img.pt_image, &mlx->img.bpp,*/
-			/*&mlx->img.size_l, &mlx->img.endian);*/
+	mlx->img.img_ptr = mlx_new_image(mlx->ptr, mlx->size_w, mlx->size_h);
+	mlx->img.img_str = mlx_get_data_addr(mlx->img.img_ptr, &mlx->img.bpp,
+			&mlx->img.s_l, &mlx->img.endian);
 	draw_map(mlx);
-	mlx_key_hook(mlx->win, ft_keyboard, mlx);
-	mlx_mouse_hook(mlx->win, ft_mouse, mlx);
+	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img.img_ptr, 0, 0);
+	mlx_hook(mlx->win, 2, 3, ft_keyboard, mlx);
 	mlx_loop(mlx->ptr);
 	return (1);
 }
 
-void		calcul_z(t_mlx *mlx)
+void		put_pixel(int x, int y, unsigned int color, t_img *img)
 {
-	while (mlx->z_min <= mlx->z_max)
+	unsigned char r;
+	unsigned char g;
+	unsigned char b;
+
+	b = (color & 0xFF) >> 0;
+	g = (color & 0xFF00) >> 8;
+	r = (color & 0xFF0000) >> 16;
+	if (img->endian == 0)
 	{
-		mlx->z_min++;
-		mlx->z_scale++;
+		if (img->img_str[(y * img->s_l) + x * (img->bpp / 8)] != b)
+			img->img_str[(y * img->s_l) + x * (img->bpp / 8)] = b;
+		if (img->img_str[(y * img->s_l) + x * (img->bpp / 8) + 1] != g)
+			img->img_str[(y * img->s_l) + x * (img->bpp / 8) + 1] = g;
+		if (img->img_str[(y * img->s_l) + x * (img->bpp / 8) + 2] != r)
+			img->img_str[(y * img->s_l) + x * (img->bpp / 8) + 2] = r;
+	}
+	else
+	{
+		img->img_str[y * img->s_l + x * img->bpp / 8] = (color & 0xFF) >> 0;
+		img->img_str[y * img->s_l + x * img->bpp / 8 + 1] =
+			(color & 0xFF00) >> 8;
+		img->img_str[y * img->s_l + x * img->bpp / 8 + 2] =
+			(color & 0xFF0000) >> 16;
 	}
 }
-//l'endian sert a savoir le sens de lecture d'un octet
-//petit endian = faible->fort (0 -> 124)
-//grand->endian = fort->faible (124 -> 0)
-//
-//a la fin faire mlx_put_img_to_window pour afficher la map
+
+void		get_z(int z, t_mlx *mlx)
+{
+	if (z > mlx->z_max)
+		mlx->z_max = z;
+	if (z < mlx->z_min)
+		mlx->z_min = z;
+}

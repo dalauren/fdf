@@ -6,7 +6,7 @@
 /*   By: dalauren <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/17 13:01:23 by dalauren          #+#    #+#             */
-/*   Updated: 2018/04/20 16:22:49 by dalauren         ###   ########.fr       */
+/*   Updated: 2018/04/24 19:49:36 by dalauren         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ void		line(t_line l, t_mlx *mlx, int color)
 	step = 2 * d.y - d.x;
 	while (++i <= d.x)
 	{
-		// faire un put pixel qui prend en compte le Z
-		mlx_pixel_put(mlx->ptr, mlx->win, cur.x + (mlx->size_w / 2),
-				cur.y + (mlx->size_h / 2), color);
+		put_pixel(cur.x + (mlx->size_w / 3), cur.y + (mlx->size_h / 3),
+				color, &mlx->img);
 		if (step >= 0)
 		{
 			line_inc(l, &cur, swp, step);
@@ -64,5 +63,45 @@ void		line(t_line l, t_mlx *mlx, int color)
 		}
 		line_inc(l, &cur, swp, step);
 		step += 2 * d.y;
+	}
+}
+
+void		zoom_plus(t_mlx *mlx)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < mlx->nb_line)
+	{
+		j = 0;
+		while (j < mlx->size_line)
+		{
+			mlx->pt[i][j]->x *= 1.1;
+			mlx->pt[i][j]->y *= 1.1;
+			mlx->pt[i][j]->z *= 1.1;
+			j++;
+		}
+		i++;
+	}
+}
+
+void		zoom_less(t_mlx *mlx)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < mlx->nb_line)
+	{
+		j = 0;
+		while (j < mlx->size_line)
+		{
+			mlx->pt[i][j]->x /= 1.1;
+			mlx->pt[i][j]->y /= 1.1;
+			mlx->pt[i][j]->z /= 1.1;
+			j++;
+		}
+		i++;
 	}
 }
